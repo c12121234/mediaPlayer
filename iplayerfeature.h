@@ -5,6 +5,7 @@
 using std::shared_ptr;
 class PlayerController;
 class QWidget;
+class QMediaPlayer;
 class IPlayerFeature
 {
 public:
@@ -20,6 +21,15 @@ class AboutFeature : public IPlayerFeature
 public:
     AboutFeature(PlayerController** ppPCL);
     void WorkedFeature(QWidget* parent) override;
+};
+
+class OpenFileFeature : public IPlayerFeature
+{
+public:
+    OpenFileFeature(PlayerController** ppPCL);
+    void WorkedFeature(QWidget* parent) override;
+private:
+    QMediaPlayer* m_pMediaPlayer;
 };
 
 #endif // IPLAYERFEATURE_H

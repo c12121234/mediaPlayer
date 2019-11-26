@@ -21,5 +21,6 @@ public:
 private:
     Ui::MainWindow *ui;
     PlayerController* m_pPlayerController;
+    QThread* m_pThread;
 };
 #endif // MAINWINDOW_H

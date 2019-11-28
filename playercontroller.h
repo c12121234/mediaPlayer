@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QAction>
-
+class IPlayerFeature;
 
 class PlayerController : public QObject
 {
@@ -14,11 +14,22 @@ public:
 public slots:
     void HandleBtnFileOpen();
     void HandleBtnAboutVersion();
+    void HandleBtnPause();
+    void HandleBtnStart();
+    void HandleBtnStop();
+    void HandleProgressBarClicked(qint64 val);
+    void HandleProgressBarmoved(qint64 val);
+    void HandleProgressBarReleased();
+    void HandleTimerStopFromView();
+    void SettingFuctionFeature();
 
 signals:
-
+    void SendHandleBtnFileOpenSignal(IPlayerFeature* pIP);
+    void SendHandleBtnAboutVersion(IPlayerFeature* pIP);
+    void SendHandleBtnPauseSignal(IPlayerFeature* pIP);
+    void SendBtnStopSignal();
+    void EmitTimerStopSignal();
 private:
-    void SettingFuctionFeature();
     QWidget* m_pParent;
 
 };

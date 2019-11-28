@@ -3,11 +3,13 @@
 #include "iplayerfeature.h"
 #include <QThread>
 #include <QDebug>
+#include <QTimer>
 
 PlayerController::PlayerController(QWidget *pmember, QWidget *parent) : QObject(parent)
   ,m_pParent(pmember)
 {
-    SettingFuctionFeature();
+    //SettingFuctionFeature();
+    QTimer::singleShot(20,this,&PlayerController::SettingFuctionFeature);
 }
 
 PlayerController::~PlayerController()
@@ -24,14 +26,67 @@ void PlayerController::HandleBtnFileOpen()
 {
     qDebug()<<"PlayerController:"<<QThread::currentThreadId()<<"\n";
     IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
-    pF->WorkedFeature(m_pParent);
+    //pF->WorkedFeature(m_pParent);
+    emit SendHandleBtnFileOpenSignal(pF);
 }
 
 void PlayerController::HandleBtnAboutVersion()
 {
     qDebug()<<"PlayerController:"<<QThread::currentThreadId()<<"\n";
-    IPlayerFeature* pF = FeatureFactory::CreateFeature("About");
-    pF->WorkedFeature(m_pParent);
+    IPlayerFeature* pF = FeatureFactory::CreateFeature("About");    
+    //pF->WorkedFeature(m_pParent);
+    emit SendHandleBtnAboutVersion(pF);
+}
+
+void PlayerController::HandleBtnPause()
+{
+    qDebug()<<"function name:"<<Q_FUNC_INFO;
+    IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
+    OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
+    pOF->PlayerPause();
+}
+
+void PlayerController::HandleBtnStart()
+{
+    IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
+    OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
+    pOF->PlayerStart();
+}
+
+void PlayerController::HandleBtnStop()
+{
+    IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
+    OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
+    pOF->PlayerStop();
+    emit SendBtnStopSignal();
+}
+
+void PlayerController::HandleProgressBarClicked(qint64 val)
+{
+    IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
+    OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
+    qint64 dur = pOF->GetPlayerDuration();
+    pOF->SetPlayerPosition(val*dur/1000); //1000 is slider max value;
+}
+
+void PlayerController::HandleProgressBarmoved(qint64 val)
+{
+    IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
+    OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
+    qint64 dur = pOF->GetPlayerDuration();
+    pOF->SetPlayerPosition(val*dur/1000); //1000 is slider max value;
+}
+
+void PlayerController::HandleProgressBarReleased()
+{
+    IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
+    OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
+    pOF->PlayerStart();
+}
+
+void PlayerController::HandleTimerStopFromView()
+{
+    emit EmitTimerStopSignal();
 }
 
 void PlayerController::SettingFuctionFeature()

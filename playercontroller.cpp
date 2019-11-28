@@ -66,6 +66,7 @@ void PlayerController::HandleProgressBarClicked(qint64 val)
     IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
     OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
     qint64 dur = pOF->GetPlayerDuration();
+    pOF->PlayerPause();
     pOF->SetPlayerPosition(val*dur/1000); //1000 is slider max value;
 }
 

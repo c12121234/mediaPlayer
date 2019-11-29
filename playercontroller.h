@@ -22,12 +22,12 @@ public slots:
     void HandleProgressBarReleased();
     void HandleTimerStopFromView();
     void SettingFuctionFeature();
+    void HandleVolumeChanged(int nVal);
 
 signals:
     void SendHandleBtnFileOpenSignal(IPlayerFeature* pIP);
     void SendHandleBtnAboutVersion(IPlayerFeature* pIP);
     void SendHandleBtnPauseSignal(IPlayerFeature* pIP);
-    void SendBtnStopSignal();
     void EmitTimerStopSignal();
 private:
     QWidget* m_pParent;

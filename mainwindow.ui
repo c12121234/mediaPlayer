@@ -121,7 +121,10 @@
        </spacer>
       </item>
       <item row="4" column="0">
-       <widget class="QSlider" name="verticalSlider">
+       <widget class="MySlider" name="verticalSlider">
+        <property name="maximum">
+         <number>100</number>
+        </property>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -198,6 +201,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MySlider</class>
+   <extends>QSlider</extends>
+   <header location="global">myslider.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

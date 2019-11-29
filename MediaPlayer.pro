@@ -20,12 +20,14 @@ SOURCES += \
     iplayerfeature.cpp \
     main.cpp \
     mainwindow.cpp \
+    myslider.cpp \
     playercontroller.cpp
 
 HEADERS += \
     featurefactory.h \
     iplayerfeature.h \
     mainwindow.h \
+    myslider.h \
     playercontroller.h
 
 FORMS += \

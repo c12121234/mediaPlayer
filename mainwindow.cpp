@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "playercontroller.h"
 #include "iplayerfeature.h"
+#include "myslider.h"
 #include <memory>
 #include <QThread>
 #include <QDebug>
@@ -16,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_pThread(new QThread())
     , m_nMaxlength(1000)
 {
-    ui->setupUi(this);   
+    ui->setupUi(this);
     ui->BtnPlay->hide();
     ui->BtnStop->hide();
     ui->BtnPause->hide();
@@ -50,6 +51,8 @@ void MainWindow::ConnectedBtnFeature()
     connect(this,&MainWindow::SendProgressBarMoved,m_pPlayerController,&PlayerController::HandleProgressBarmoved);
     connect(ui->horizontalSlider,&QAbstractSlider::sliderReleased,this,&MainWindow::HandleProgressBarReleasedFromView);
     connect(this,&MainWindow::SendProgressBarReleased,m_pPlayerController,&PlayerController::HandleProgressBarReleased);
+    connect(ui->verticalSlider,&MySlider::MySliderClicked,m_pPlayerController,&PlayerController::HandleVolumeChanged);
+    connect(ui->verticalSlider,&MySlider::sliderMoved,m_pPlayerController,&PlayerController::HandleVolumeChanged);
 }
 
 void MainWindow::WorkBtnFileOpen(IPlayerFeature *pIP)
@@ -60,6 +63,8 @@ void MainWindow::WorkBtnFileOpen(IPlayerFeature *pIP)
     ui->horizontalSlider->setVisible(true);
     ui->horizontalSlider->setRange(0,m_nMaxlength);
     ui->verticalSlider->setVisible(true);
+    ui->verticalSlider->setRange(0,100);
+    ui->verticalSlider->setValue(100);
     OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pIP);
     connect(pOF,&OpenFileFeature::SendPositionDurationSignal,this,&MainWindow::HandleProgressBarChanged);
     pOF->WorkedFeature(this);

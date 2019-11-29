@@ -58,7 +58,6 @@ void PlayerController::HandleBtnStop()
     IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
     OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
     pOF->PlayerStop();
-    emit SendBtnStopSignal();
 }
 
 void PlayerController::HandleProgressBarClicked(qint64 val)
@@ -98,4 +97,11 @@ void PlayerController::SettingFuctionFeature()
     OpenFileFeature* pOpenFile = new OpenFileFeature(&pSelf);
     FeatureFactory::RegisterFeature("OpenFile",pOpenFile);
     qDebug()<<"PlayerController:"<<QThread::currentThreadId()<<"\n";
+}
+
+void PlayerController::HandleVolumeChanged(int nVal)
+{
+    IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
+    OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
+    pOF->SetPlayerVolume(nVal);
 }

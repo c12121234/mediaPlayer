@@ -21,6 +21,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     myslider.cpp \
+    myvslider.cpp \
     playercontroller.cpp
 
 HEADERS += \
@@ -28,6 +29,7 @@ HEADERS += \
     iplayerfeature.h \
     mainwindow.h \
     myslider.h \
+    myvslider.h \
     playercontroller.h
 
 FORMS += \

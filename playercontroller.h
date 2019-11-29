@@ -29,8 +29,10 @@ signals:
     void SendHandleBtnAboutVersion(IPlayerFeature* pIP);
     void SendHandleBtnPauseSignal(IPlayerFeature* pIP);
     void EmitTimerStopSignal();
+    void EmitProgressNOPauseClicked();
 private:
     QWidget* m_pParent;
+    bool m_bBtnClicked;
 
 };
 

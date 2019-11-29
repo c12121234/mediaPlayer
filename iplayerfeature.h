@@ -3,11 +3,11 @@
 #include <QtGlobal>
 #include <QObject>
 #include <memory>
+#include <QMediaPlayer>
 
 using std::shared_ptr;
 class PlayerController;
 class QWidget;
-class QMediaPlayer;
 class IPlayerFeature :public QObject
 {
     Q_OBJECT
@@ -42,6 +42,7 @@ public:
     qint64 GetPlayerPosition();
     qint64 GetPlayerDuration();
     void SetPlayerPosition(qint64 pos);
+    QMediaPlayer::State GetPlayerState();
 
 public slots:
     void EmitPositionAndDuration();

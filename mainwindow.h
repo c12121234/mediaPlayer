@@ -21,7 +21,8 @@ public slots:
     void WorkBtnFileOpen(IPlayerFeature* pIP);
     void WorkBtnAbout(IPlayerFeature* pIP);
     void HandleProgressBarChanged(qint64 val);
-    void HandleProgressBarPressed();
+    void HandleProgressBarPressed(int nTemp);
+    //void HandleProgressBarPressed();
     void HandleProgressBarMoved();
     void HandleProgressBarReleasedFromView();
 

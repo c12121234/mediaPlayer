@@ -57,7 +57,7 @@ void OpenFileFeature::WorkedFeature(QWidget *parent)
     QTimer* pTimer = new QTimer();
     pTimer->setInterval(500);
     connect(pTimer,&QTimer::timeout,this,&OpenFileFeature::EmitPositionAndDuration);
-    connect(*(this->m_ppPCL),&PlayerController::EmitTimerStopSignal,pTimer,&QTimer::stop);
+    //connect(*(this->m_ppPCL),&PlayerController::EmitTimerStopSignal,pTimer,&QTimer::stop);
     connect(this,&OpenFileFeature::DurationEndSignal,pTimer,&QTimer::deleteLater);
     m_pMediaPlayer->play();
     pTimer->start();
@@ -89,7 +89,9 @@ void OpenFileFeature::PlayerStop()
 void OpenFileFeature::SetPlayerVolume(int nVal)
 {
     //default 100 = max 0 = min
-    m_pMediaPlayer->setVolume(nVal);
+    //1000 means slider bar height value,nVal is position.
+    double dVal = 100 * ((double)nVal/(double)1000);
+    m_pMediaPlayer->setVolume(dVal);
 }
 
 int OpenFileFeature::GetPlayerVolume()
@@ -112,6 +114,11 @@ void OpenFileFeature::SetPlayerPosition(qint64 pos)
     m_pMediaPlayer->setPosition(pos);
 }
 
+QMediaPlayer::State OpenFileFeature::GetPlayerState()
+{
+    return m_pMediaPlayer->state();
+}
+
 void OpenFileFeature::EmitPositionAndDuration()
 {
     qint64 pos =m_pMediaPlayer->position();
@@ -126,5 +133,3 @@ void OpenFileFeature::EmitPositionAndDuration()
     else if(dur == 0 && m_pMediaPlayer->state() == QMediaPlayer::StoppedState)
         emit DurationEndSignal();
 }
-
-

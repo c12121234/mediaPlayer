@@ -7,6 +7,7 @@
 
 PlayerController::PlayerController(QWidget *pmember, QWidget *parent) : QObject(parent)
   ,m_pParent(pmember)
+  ,m_bBtnClicked(false)
 {
     //SettingFuctionFeature();
     QTimer::singleShot(20,this,&PlayerController::SettingFuctionFeature);
@@ -44,6 +45,7 @@ void PlayerController::HandleBtnPause()
     IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
     OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
     pOF->PlayerPause();
+    m_bBtnClicked = true;
 }
 
 void PlayerController::HandleBtnStart()
@@ -51,6 +53,7 @@ void PlayerController::HandleBtnStart()
     IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
     OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
     pOF->PlayerStart();
+    m_bBtnClicked = false;
 }
 
 void PlayerController::HandleBtnStop()
@@ -65,7 +68,7 @@ void PlayerController::HandleProgressBarClicked(qint64 val)
     IPlayerFeature* pF = FeatureFactory::CreateFeature("OpenFile");
     OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pF);
     qint64 dur = pOF->GetPlayerDuration();
-    pOF->PlayerPause();
+    //pOF->PlayerPause();
     pOF->SetPlayerPosition(val*dur/1000); //1000 is slider max value;
 }
 

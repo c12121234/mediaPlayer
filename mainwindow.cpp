@@ -3,6 +3,7 @@
 #include "playercontroller.h"
 #include "iplayerfeature.h"
 #include "myslider.h"
+#include "myvslider.h"
 #include <memory>
 #include <QThread>
 #include <QDebug>
@@ -44,15 +45,16 @@ void MainWindow::ConnectedBtnFeature()
     connect(ui->BtnPause,&QPushButton::clicked,m_pPlayerController,&PlayerController::HandleBtnPause);
     connect(ui->BtnPlay,&QPushButton::clicked,m_pPlayerController,&PlayerController::HandleBtnStart);
     connect(ui->BtnStop,&QPushButton::clicked,m_pPlayerController,&PlayerController::HandleBtnStop);
-    connect(ui->horizontalSlider,&QAbstractSlider::sliderPressed,this,&MainWindow::HandleProgressBarPressed);
+    //connect(ui->horizontalSlider,&QAbstractSlider::sliderPressed,this,&MainWindow::HandleProgressBarPressed);
+    connect(ui->horizontalSlider,&MySlider::MySliderClicked,this,&MainWindow::HandleProgressBarPressed);
     connect(this,&MainWindow::SendProgressBarPressed,m_pPlayerController,&PlayerController::HandleProgressBarClicked);
     connect(this,&MainWindow::EmitTimerStopSignal,m_pPlayerController,&PlayerController::HandleTimerStopFromView);
     connect(ui->horizontalSlider,&QAbstractSlider::sliderMoved,this,&MainWindow::HandleProgressBarMoved);
     connect(this,&MainWindow::SendProgressBarMoved,m_pPlayerController,&PlayerController::HandleProgressBarmoved);
     connect(ui->horizontalSlider,&QAbstractSlider::sliderReleased,this,&MainWindow::HandleProgressBarReleasedFromView);
     connect(this,&MainWindow::SendProgressBarReleased,m_pPlayerController,&PlayerController::HandleProgressBarReleased);
-    connect(ui->verticalSlider,&MySlider::MySliderClicked,m_pPlayerController,&PlayerController::HandleVolumeChanged);
-    connect(ui->verticalSlider,&MySlider::sliderMoved,m_pPlayerController,&PlayerController::HandleVolumeChanged);
+    connect(ui->verticalSlider,&MyVslider::MyVsliderClicked,m_pPlayerController,&PlayerController::HandleVolumeChanged);
+    connect(ui->verticalSlider,&MyVslider::sliderMoved,m_pPlayerController,&PlayerController::HandleVolumeChanged);
 }
 
 void MainWindow::WorkBtnFileOpen(IPlayerFeature *pIP)
@@ -63,8 +65,8 @@ void MainWindow::WorkBtnFileOpen(IPlayerFeature *pIP)
     ui->horizontalSlider->setVisible(true);
     ui->horizontalSlider->setRange(0,m_nMaxlength);
     ui->verticalSlider->setVisible(true);
-    ui->verticalSlider->setRange(0,100);
-    ui->verticalSlider->setValue(100);
+    ui->verticalSlider->setRange(0,m_nMaxlength);
+    ui->verticalSlider->setValue(1000);
     OpenFileFeature* pOF = dynamic_cast<OpenFileFeature*>(pIP);
     connect(pOF,&OpenFileFeature::SendPositionDurationSignal,this,&MainWindow::HandleProgressBarChanged);
     pOF->WorkedFeature(this);
@@ -80,11 +82,19 @@ void MainWindow::HandleProgressBarChanged(qint64 val)
 {
     ui->horizontalSlider->setValue(val);
 }
-
+/*
 void MainWindow::HandleProgressBarPressed()
 {
     int nVal = ui->horizontalSlider->value();
     emit SendProgressBarPressed(nVal);
+}*/
+
+
+void MainWindow::HandleProgressBarPressed(int nTemp)
+{
+    //int nVal = ui->horizontalSlider->value();
+    //emit SendProgressBarPressed(nVal);
+    emit SendProgressBarPressed(nTemp);
 }
 
 void MainWindow::HandleProgressBarMoved()
